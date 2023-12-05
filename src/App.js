@@ -37,9 +37,11 @@ export default function App() {
   const dispatch = useDispatch();
   const token = useSelector((store) => store.token);
   const isAdmin = useSelector((store) => store.user?.isAdmin);
+  
   const isRegistrationAllowed = useSelector(
     (store) => store.status.registrationOpen
   );
+  
 
   BackEnd.get("status").then((resp) => {
     if (resp?.status < 300) {
@@ -59,7 +61,7 @@ export default function App() {
       <BrowserRouter>
         {!token ? (
           <Switch>
-            {isRegistrationAllowed && (
+            { isRegistrationAllowed && (
               <Route path={"/register"} component={Register} />
             )}
             <Route path={"/login"} component={Login} />

@@ -8,7 +8,45 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Link,
+  Box,
+  Tab,
+  Tabs
 } from "@material-ui/core";
+import { PropTypes } from "prop-types";
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 const useStyles = makeStyles({
   table: {
@@ -20,7 +58,7 @@ const useStyles = makeStyles({
 
 export default function HomePage() {
   const classes = useStyles();
-
+  
   const precipRows = [
     { cat: 1, range: "none" },
     { cat: 2, range: "trace - .10" },
@@ -33,14 +71,22 @@ export default function HomePage() {
     { cat: 9, range: "1.51 - 2.00" },
     { cat: 10, range: "> 2.00" },
   ];
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="space-evenly"
-      alignItems="center"
-    >
-      <Grid item xs={6}>
+    <Box sx = {{ width: '100%' }}>
+    <Grid item xs={20}
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        
         <br />
         <br />
         <Typography variant={"h4"} align={"center"} color={"primary"}>
@@ -49,7 +95,24 @@ export default function HomePage() {
         <Typography variant={"h5"} align={"center"} color={"primary"}>
           Forecast Contest
         </Typography>
-        <Typography variant={"h6"} align={"center"} color={"primary"}>
+        </Grid>
+    
+    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
+          <Tab label="Rules" {...a11yProps(0)} />
+          <Tab label="Scoring" {...a11yProps(1)} />
+          <Tab label="Quick Links" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+    >   
+        <CustomTabPanel value={value} index={0}>
+        <Grid item xs={15} >
+        <Typography variant={"h5"} align={"center"} color={"primary"}>
           Rules
         </Typography>
         <Typography variant={"body"}>
@@ -57,9 +120,52 @@ export default function HomePage() {
           selected
           <br />
           <b>2.</b> A category for the daily total precipitation must be
-          selected
+          selected (Categories outlined below)
+          <br />
+          <b>3.</b> Each forecast must also state whether there will be any
+          snow. Any observation of mixed rain and snow will count as snow. Sleet
+          and freezing ran will not count as snow.
+          <br />
+          <b>4.</b> All forecast must be entered by 5:30 PM on Monday and
+          Wednesday.
+          <br />
+          <b>5.</b> If no forecast is submitted, the average climatological high
+          and low for the forecast date will be substituted for your forecast
+          and a value corresponding to Category 3 (Based on Salisbury's average
+          annual precipitation total divided by 365 will be used)
         </Typography>
-        <Table className={classes.table} size={"small"}>
+        </Grid>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+        <Grid item xs={15}>
+        <Typography variant={"h5"} align={"center"} color={"primary"}>
+          Scoring
+        </Typography>
+        <Typography variant={"body"}>
+          <b>1.</b> Temperature scores are calculated by the number of degrees
+          missed for both high and low temperatures
+          <br />
+          <b>2.</b> Precipitation scores are determined by the number of
+          categories missed between the forecast amount and the actual quantity.
+          Each category missed is 5 points.
+          <br />
+          <b>3.</b> If the occurrence or non-occurrence of snow is not
+          forecasted correctly, 5 points will be added to the total forecast
+          score.
+          <br />
+          <b>4.</b> The winner in each category will be determined by the lowest
+          score for the semester. The top five finishers in each category will
+          be entered into our Forecasting Hall of Fame.
+        </Typography>
+      </Grid>
+      </CustomTabPanel>
+      < br />
+      <CustomTabPanel value={value} index={1}>
+      <Grid>
+        
+    <Typography variant={"h5"} align={"center"} color={"primary"}>
+          Categories
+      <Table className={classes.table} size={"small"}>
           <TableHead>
             <TableRow>
               <TableCell align={"center"}>
@@ -81,39 +187,33 @@ export default function HomePage() {
             ))}
           </TableBody>
         </Table>
-        <Typography variant={"body"}>
-          <b>3.</b> Each forecast must also state whether there will be any
-          snow. Any observation of mixed rain and snow will count as snow. Sleet
-          and freezing ran will not count as snow.
-          <br />
-          <b>4.</b> All forecast must be entered by 5:30 PM on Monday and
-          Wednesday.
-          <br />
-          <b>5.</b> If no forecast is submitted, the average climatological high
-          and low for the forecast date will be substituted for your forecast
-          and a value corresponding to Category 3 (Based on Salisbury's average
-          annual precipitation total divided by 365 will be used)
         </Typography>
+        </Grid>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+        <Grid>
         <Typography variant={"h5"} align={"center"} color={"primary"}>
-          Scoring
+          Quick Links
         </Typography>
-        <Typography variant={"body"}>
-          <b>1.</b> Temperature scores are calculated by the number of degrees
-          missed for both high and low temperatures
-          <br />
-          <b>2.</b> Precipitation scores are determined by the number of
-          categories missed between the forecast amount and the actual quantity.
-          Each category missed is 5 points.
-          <br />
-          <b>3.</b> If the occurrence or non-occurrence of snow is not
-          forecasted correctly, 5 points will be added to the total forecast
-          score.
-          <br />
-          <b>4.</b> The winner in each category will be determined by the lowest
-          score for the semester. The top five finishers in each category will
-          be entered into our Forecasting Hall of Fame.
-        </Typography>
-      </Grid>
+        <br />
+        <Link href="/forecast" variant="outlined" >
+          Make A Forecast
+        </Link>
+        <br />
+        <Link href="/history" variant="outlined" >
+          history
+        </Link>
+        <br />
+        <Link href="/standings" variant="outlined" >
+          Competition standings
+        </Link>
+        <br />
+        <Link href="/climatology" variant="outlined" >
+          history
+        </Link>
+        </Grid>
+        </CustomTabPanel>
     </Grid>
+    </Box>
   );
 }
