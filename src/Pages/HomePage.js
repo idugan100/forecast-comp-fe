@@ -115,12 +115,12 @@ export default function HomePage() {
         <Typography variant={"h5"} align={"center"} color={"primary"}>
           Rules
         </Typography>
-        <Typography variant={"body"}>
+        <Typography variant={"h6"}>
           <b>1.</b> A value for both the high and low temperature must be
           selected
           <br />
           <b>2.</b> A category for the daily total precipitation must be
-          selected (Categories outlined below)
+          selected
           <br />
           <b>3.</b> Each forecast must also state whether there will be any
           snow. Any observation of mixed rain and snow will count as snow. Sleet
@@ -141,7 +141,7 @@ export default function HomePage() {
         <Typography variant={"h5"} align={"center"} color={"primary"}>
           Scoring
         </Typography>
-        <Typography variant={"body"}>
+        <Typography variant={"h6"}>
           <b>1.</b> Temperature scores are calculated by the number of degrees
           missed for both high and low temperatures
           <br />
@@ -196,19 +196,19 @@ export default function HomePage() {
           Quick Links
         </Typography>
         <br />
-        <Link href="/forecast" variant="outlined" >
+        <Link href="/forecast" variant={"h5"} >
           Make A Forecast
         </Link>
         <br />
-        <Link href="/history" variant="outlined" >
+        <Link href="/history" variant={"h5"} >
           history
         </Link>
         <br />
-        <Link href="/standings" variant="outlined" >
+        <Link href="/standings" variant={"h5"} >
           Competition standings
         </Link>
         <br />
-        <Link href="/climatology" variant="outlined" >
+        <Link href="/climatology" variant={"h5"} >
           history
         </Link>
         </Grid>
