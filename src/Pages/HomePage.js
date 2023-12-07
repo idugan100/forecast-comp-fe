@@ -160,7 +160,7 @@ export default function HomePage() {
       </Grid>
       </CustomTabPanel>
       < br />
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={value} index={0}>
       <Grid>
         
     <Typography variant={"h5"} align={"center"} color={"primary"}>
